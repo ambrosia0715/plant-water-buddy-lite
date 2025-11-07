@@ -46,16 +46,44 @@ dev_dependencies:
   hive_generator: ^2.0.1
   lint: ^2.3.0
   flutter_lints: ^3.0.0
+  flutter_launcher_icons: ^0.13.1
 
 
 flutter:
   uses-material-design: true
   
-  # assets:
-  #   - images/
+  assets:
+    - assets/images/
   
   # fonts:
   #   - family: NotoSansKR
   #     fonts:
   #       - asset: fonts/NotoSansKR-Regular.ttf
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/app_icon.png"
+  min_sdk_android: 21
+  
+  # iOS 설정
+  ios_content_rendering: "original"
+  
+  # 웹 설정
+  web:
+    generate: true
+    image_path: "assets/images/app_icon.png"
+    background_color: "#87CEFA"
+    theme_color: "#40E0D0"
+  
+  # Windows 설정
+  windows:
+    generate: true
+    image_path: "assets/images/app_icon.png"
+    icon_size: 48
+  
+  # macOS 설정
+  macos:
+    generate: true
+    image_path: "assets/images/app_icon.png"
 
