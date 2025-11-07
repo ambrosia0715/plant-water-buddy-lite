@@ -46,8 +46,10 @@ class DateFormats {
     }
   }
 
-  // 시간 포맷 (HH:mm)
+  // 시간 포맷 (오전/오후 h:mm)
   static String formatTime(int hour, int minute) {
-    return '${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}';
+    final period = hour >= 12 ? '오후' : '오전';
+    final displayHour = hour > 12 ? hour - 12 : (hour == 0 ? 12 : hour);
+    return '$period ${displayHour}:${minute.toString().padLeft(2, '0')}';
   }
 }

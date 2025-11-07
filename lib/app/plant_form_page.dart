@@ -187,6 +187,12 @@ class _PlantFormPageState extends ConsumerState<PlantFormPage> {
                 final time = await showTimePicker(
                   context: context,
                   initialTime: _notifyTime,
+                  builder: (context, child) {
+                    return MediaQuery(
+                      data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
+                      child: child!,
+                    );
+                  },
                 );
                 if (time != null) {
                   setState(() {
