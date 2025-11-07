@@ -8,110 +8,114 @@ from PIL import Image, ImageDraw, ImageFont
 import math
 
 def create_app_icon(size=1024):
-    # 배경색: 밝은 하늘색 그라데이션
-    img = Image.new('RGB', (size, size), '#FFFFFF')
+    # 배경색: 밝은 하늘색 (전체 사각형)
+    img = Image.new('RGB', (size, size), '#E8F4F8')
     draw = ImageDraw.Draw(img)
     
-    # 원형 배경 (부드러운 그라데이션 효과)
     center = size // 2
     
-    # 배경 그라데이션 (연한 파란색에서 청록색으로)
-    for i in range(size):
-        for j in range(size):
-            dx = i - center
-            dy = j - center
-            distance = math.sqrt(dx*dx + dy*dy)
-            if distance < center:
-                # 중심에서 멀어질수록 색상 변화
-                ratio = distance / center
-                r = int(135 + (64 - 135) * ratio)
-                g = int(206 + (224 - 206) * ratio)
-                b = int(250 + (208 - 250) * ratio)
-                img.putpixel((i, j), (r, g, b))
+    center = size // 2
     
-    draw = ImageDraw.Draw(img)
-    
-    # 물방울 그리기 (중앙 상단)
+    # 물방울 그리기 (더 크게, 중앙 상단)
     droplet_center_x = center
-    droplet_center_y = center - size // 6
-    droplet_width = size // 4
-    droplet_height = size // 3
+    droplet_center_y = center - size // 8
+    droplet_width = size // 2.5
+    droplet_height = size // 2.2
     
-    # 물방울 모양 (타원 + 꼭지점)
+    # 물방울 모양 (타원 + 뾰족한 꼭지점)
     points = []
-    for angle in range(135, 405, 3):  # 135도부터 405도까지
+    for angle in range(135, 405, 2):  # 더 부드러운 곡선
         rad = math.radians(angle)
         if angle <= 270:
             # 상단 뾰족한 부분
-            scale = 0.5 + 0.5 * (angle - 135) / 135
+            scale = 0.4 + 0.6 * (angle - 135) / 135
         else:
             scale = 1.0
         x = droplet_center_x + droplet_width * scale * math.cos(rad)
         y = droplet_center_y + droplet_height * scale * math.sin(rad)
         points.append((x, y))
     
-    # 물방울 그림자
-    shadow_offset = size // 50
-    draw.polygon([(p[0] + shadow_offset, p[1] + shadow_offset) for p in points], 
-                 fill=(100, 150, 180, 128))
+    # 물방울 그림자 (더 부드럽게)
+    shadow_offset = size // 60
+    for i in range(3):
+        offset = shadow_offset * (i + 1)
+        alpha_val = 50 - i * 15
+        shadow_points = [(p[0] + offset, p[1] + offset) for p in points]
+        # PIL은 RGB만 지원하므로 어두운 회색 사용
+        shadow_color = (180 - i * 20, 200 - i * 20, 210 - i * 20)
+        draw.polygon(shadow_points, fill=shadow_color, outline=shadow_color)
     
-    # 물방울 본체 (밝은 청록색)
-    draw.polygon(points, fill=(64, 224, 208))
+    # 물방울 본체 (더 진한 청록색 - 파란색 계열)
+    draw.polygon(points, fill=(30, 144, 255))  # DodgerBlue
     
-    # 물방울 하이라이트
-    highlight_x = droplet_center_x - droplet_width // 4
-    highlight_y = droplet_center_y - droplet_height // 4
-    highlight_size = droplet_width // 3
+    # 물방울 외곽선
+    draw.polygon(points, outline=(20, 100, 200), width=size//150)
+    
+    # 물방울 하이라이트 (더 밝게)
+    highlight_x = droplet_center_x - droplet_width // 3
+    highlight_y = droplet_center_y - droplet_height // 3
+    highlight_size = droplet_width // 2.5
     draw.ellipse([highlight_x - highlight_size//2, highlight_y - highlight_size//2,
                   highlight_x + highlight_size//2, highlight_y + highlight_size//2],
-                 fill=(200, 255, 255, 200))
+                 fill=(150, 200, 255))
     
     # 작은 하이라이트
-    small_highlight_x = droplet_center_x + droplet_width // 5
-    small_highlight_y = droplet_center_y - droplet_height // 6
-    small_size = droplet_width // 6
+    small_highlight_x = droplet_center_x + droplet_width // 4
+    small_highlight_y = droplet_center_y - droplet_height // 5
+    small_size = droplet_width // 5
     draw.ellipse([small_highlight_x - small_size//2, small_highlight_y - small_size//2,
                   small_highlight_x + small_size//2, small_highlight_y + small_size//2],
-                 fill=(220, 255, 255, 180))
+                 fill=(180, 220, 255))
     
-    # 식물 잎 그리기 (하단)
-    leaf_y = center + size // 6
-    leaf_width = size // 3
-    leaf_height = size // 5
+    # 식물 잎 그리기 (하단, 더 크고 선명한 초록색)
+    leaf_y = center + size // 5
+    leaf_width = size // 2.2
+    leaf_height = size // 3.5
     
-    # 왼쪽 잎
+    # 식물 잎 그리기 (하단, 더 크고 선명한 초록색)
+    leaf_y = center + size // 5
+    leaf_width = size // 2.2
+    leaf_height = size // 3.5
+    
+    # 왼쪽 잎 (더 진한 초록색)
     left_leaf = [
-        (center - leaf_width // 4, leaf_y),
-        (center - leaf_width, leaf_y + leaf_height // 2),
-        (center - leaf_width // 2, leaf_y + leaf_height),
-        (center - leaf_width // 6, leaf_y + leaf_height // 2)
+        (center - leaf_width // 5, leaf_y),
+        (center - leaf_width * 0.85, leaf_y + leaf_height // 2),
+        (center - leaf_width * 0.6, leaf_y + leaf_height),
+        (center - leaf_width // 8, leaf_y + leaf_height // 2)
     ]
-    draw.polygon(left_leaf, fill=(46, 204, 113))
+    draw.polygon(left_leaf, fill=(34, 139, 34))  # ForestGreen
     
-    # 왼쪽 잎 잎맥
-    draw.line([(center - leaf_width // 4, leaf_y), 
-               (center - leaf_width // 2, leaf_y + leaf_height)], 
-              fill=(34, 153, 84), width=size//200)
+    # 왼쪽 잎 외곽선
+    draw.polygon(left_leaf, outline=(25, 100, 25), width=size//200)
     
-    # 오른쪽 잎
+    # 왼쪽 잎 잎맥 (더 굵게)
+    draw.line([(center - leaf_width // 5, leaf_y), 
+               (center - leaf_width * 0.6, leaf_y + leaf_height)], 
+              fill=(20, 80, 20), width=size//120)
+    
+    # 오른쪽 잎 (밝은 초록색으로 대비)
     right_leaf = [
-        (center + leaf_width // 4, leaf_y),
-        (center + leaf_width, leaf_y + leaf_height // 2),
-        (center + leaf_width // 2, leaf_y + leaf_height),
-        (center + leaf_width // 6, leaf_y + leaf_height // 2)
+        (center + leaf_width // 5, leaf_y),
+        (center + leaf_width * 0.85, leaf_y + leaf_height // 2),
+        (center + leaf_width * 0.6, leaf_y + leaf_height),
+        (center + leaf_width // 8, leaf_y + leaf_height // 2)
     ]
-    draw.polygon(right_leaf, fill=(52, 211, 153))
+    draw.polygon(right_leaf, fill=(50, 205, 50))  # LimeGreen
     
-    # 오른쪽 잎 잎맥
-    draw.line([(center + leaf_width // 4, leaf_y), 
-               (center + leaf_width // 2, leaf_y + leaf_height)], 
-              fill=(34, 153, 84), width=size//200)
+    # 오른쪽 잎 외곽선
+    draw.polygon(right_leaf, outline=(30, 150, 30), width=size//200)
     
-    # 줄기
-    stem_width = size // 50
-    draw.rectangle([center - stem_width, leaf_y - leaf_height // 2,
+    # 오른쪽 잎 잎맥 (더 굵게)
+    draw.line([(center + leaf_width // 5, leaf_y), 
+               (center + leaf_width * 0.6, leaf_y + leaf_height)], 
+              fill=(25, 120, 25), width=size//120)
+    
+    # 줄기 (더 굵고 진한 초록색)
+    stem_width = size // 40
+    draw.rectangle([center - stem_width, leaf_y - leaf_height // 3,
                     center + stem_width, leaf_y + leaf_height],
-                   fill=(46, 204, 113))
+                   fill=(40, 120, 40))
     
     return img
 
