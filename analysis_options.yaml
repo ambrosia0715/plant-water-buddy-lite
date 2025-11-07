@@ -1,0 +1,33 @@
+# analysis_options.yaml
+include: package:lint/analysis_options.yaml
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "build/**"
+  
+  errors:
+    invalid_annotation_target: ignore
+    missing_required_param: error
+    missing_return: error
+    todo: ignore
+  
+  language:
+    strict-casts: false
+    strict-inference: false
+    strict-raw-types: false
+
+linter:
+  rules:
+    # 추가 규칙
+    prefer_single_quotes: true
+    prefer_const_constructors: true
+    prefer_const_literals_to_create_immutables: true
+    avoid_print: true
+    avoid_unnecessary_containers: true
+    sized_box_for_whitespace: true
+    use_key_in_widget_constructors: false
+    constant_identifier_names: false
+    non_constant_identifier_names: false
+
