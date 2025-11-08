@@ -1,35 +1,52 @@
-# Plant Water Buddy - Lite# plant_water_buddy_lite
+# Plant Water Buddy - Lite
 
+식물 물주기 알림 앱 - 가볍고 실용적인 식물 관리 도우미
 
+## 📱 앱 소개
 
-식물 물주기 알림 앱 - 가볍고 실용적인 식물 관리 도우미A new Flutter project.
+Plant Water Buddy - Lite는 식물별 물주기 주기를 관리하고, 정해진 날짜에 로컬 알림으로 알려주는 간편한 식물 관리 앱입니다.
 
+### 주요 기능
 
-
-## 📱 앱 소개## Getting Started
-
-
-
-Plant Water Buddy - Lite는 식물별 물주기 주기를 관리하고, 정해진 날짜에 로컬 알림으로 알려주는 간편한 식물 관리 앱입니다.This project is a starting point for a Flutter application.
-
-
-
-### 주요 기능A few resources to get you started if this is your first Flutter project:
-
-
-
-- 🌱 **식물별 맞춤 관리**: 각 식물마다 다른 물주기 주기 설정- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-
-- ⏰ **스마트 알림**: 정해진 시간에 물주기 알림 전송- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
+- 🌱 **식물별 맞춤 관리**: 각 식물마다 다른 물주기 주기 설정
+- ⏰ **스마트 알림**: 정해진 시간에 물주기 알림 전송
 - 📊 **오늘 할 일**: 오늘/밀린 식물만 모아서 보기
+- 💾 **로컬 저장**: 모든 데이터는 기기 내부에만 저장
+- 📤 **백업/복원**: JSON 형식으로 데이터 내보내기/가져오기
+- 🎨 **깔끔한 UI**: 라이트 테마 지원
 
-- 💾 **로컬 저장**: 모든 데이터는 기기 내부에만 저장For help getting started with Flutter development, view the
+## ⚠️ 알람이 안 울릴 때 (Android)
 
-- 📤 **백업/복원**: JSON 형식으로 데이터 내보내기/가져오기[online documentation](https://docs.flutter.dev/), which offers tutorials,
+알람이 정확한 시간에 울리지 않는다면 다음 설정을 확인하세요:
 
-- 🎨 **깔끔한 UI**: 라이트/다크 테마 자동 지원samples, guidance on mobile development, and a full API reference.
+### 1. 배터리 최적화 해제
+- **설정 > 앱 > 물주기 알림_lite > 배터리**
+- **제한 없음** 선택
+- **백그라운드 사용 허용**
 
+### 2. 제조사별 추가 설정
+
+#### 삼성 (Samsung)
+- 설정 > 배터리 및 디바이스 케어 > 배터리
+- 백그라운드 사용 제한 > 제한 없음에 앱 추가
+- 절전 모드에서 앱 제외
+
+#### 샤오미 (Xiaomi)
+- 설정 > 앱 > 권한 관리 > 자동 시작 > 허용
+- 설정 > 배터리 및 성능 > 앱 배터리 세이버 > 제한 없음
+
+#### 화웨이 (Huawei)
+- 설정 > 배터리 > 앱 실행 > 수동 관리
+- 자동 실행, 보조 실행, 백그라운드 실행 모두 허용
+
+#### OPPO / Realme
+- 설정 > 배터리 > 백그라운드 절전 > 앱 제외
+- 설정 > 앱 관리 > 자동 시작 관리 > 허용
+
+### 3. 앱 내 설정
+- **설정 > 알림 권한 요청** 탭
+- **설정 > 배터리 최적화 해제** 안내 확인
+- **설정 > 예약된 알림 확인**으로 알람 등록 여부 확인
 
 ## 🚀 시작하기
 

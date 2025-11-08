@@ -44,6 +44,36 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 },
               ),
               ListTile(
+                leading: const Icon(Icons.battery_charging_full),
+                title: const Text('배터리 최적화 해제'),
+                subtitle: const Text('알람이 안 울리면 이 설정을 해제하세요'),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('배터리 최적화 해제'),
+                      content: const Text(
+                        '알람이 정확한 시간에 울리지 않는다면:\n\n'
+                        '1. 설정 > 앱 > 물주기 알림_lite\n'
+                        '2. 배터리 > 제한 없음 선택\n'
+                        '3. 백그라운드 사용 > 허용\n\n'
+                        '제조사별 추가 설정:\n'
+                        '• 삼성: 절전 모드에서 앱 제외\n'
+                        '• 샤오미: 자동 시작 허용\n'
+                        '• 화웨이: 보호된 앱에 추가',
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text('확인'),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+              ListTile(
                 leading: const Icon(Icons.notifications_active),
                 title: const Text('알림 재설정'),
                 subtitle: const Text('모든 알림을 다시 예약합니다'),

@@ -55,9 +55,11 @@ class NotificationService {
       'water_ch',
       'Plant Water',
       description: '식물 물주기 알림',
-      importance: Importance.high,
+      importance: Importance.max,
       playSound: true,
       enableVibration: true,
+      enableLights: true,
+      showBadge: true,
     );
 
     await _notifications
@@ -106,6 +108,21 @@ class NotificationService {
     return iosResult ?? true;
   }
 
+  // 배터리 최적화 예외 요청 (Android)
+  Future<void> requestBatteryOptimizationExemption() async {
+    final androidImpl = _notifications
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>();
+    
+    if (androidImpl != null) {
+      // Android 시스템 설정으로 이동하여 배터리 최적화 해제
+      // 사용자가 수동으로 설정해야 함
+      print('배터리 최적화 예외 요청: 시스템 설정에서 수동 설정 필요');
+      // Note: flutter_local_notifications는 직접 배터리 최적화 요청 API가 없음
+      // 사용자에게 안내 메시지 표시 필요
+    }
+  }
+
   // 특정 식물 알림 예약
   Future<void> scheduleFor(Plant plant) async {
     if (!plant.isActive) {
@@ -138,13 +155,18 @@ class NotificationService {
       'water_ch',
       'Plant Water',
       channelDescription: '식물 물주기 알림',
-      importance: Importance.high,
-      priority: Priority.high,
+      importance: Importance.max,
+      priority: Priority.max,
       icon: '@mipmap/ic_launcher',
       playSound: true,
       enableVibration: true,
       enableLights: true,
       fullScreenIntent: true,
+      category: AndroidNotificationCategory.alarm,
+      visibility: NotificationVisibility.public,
+      autoCancel: false,
+      ongoing: false,
+      channelShowBadge: true,
     );
 
     const iosDetails = DarwinNotificationDetails(
