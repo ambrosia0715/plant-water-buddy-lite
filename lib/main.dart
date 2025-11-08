@@ -31,6 +31,8 @@ void main() async {
   if (!kIsWeb) {
     final notificationService = NotificationService();
     await notificationService.init();
+    // 권한 요청 (앱 시작 시)
+    await notificationService.requestPermission();
   }
 
   // Google Mobile Ads 초기화 (Android/iOS만)

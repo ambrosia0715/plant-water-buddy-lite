@@ -77,9 +77,10 @@ class NotificationService {
     }
   }
 
-  // 권한 요청 (iOS)
+  // 권한 요청 (iOS + Android)
   Future<bool> requestPermission() async {
-    final result = await _notifications
+    // iOS 권한 요청
+    final iosResult = await _notifications
         .resolvePlatformSpecificImplementation<
             IOSFlutterLocalNotificationsPlugin>()
         ?.requestPermissions(
@@ -88,16 +89,21 @@ class NotificationService {
           sound: true,
         );
 
-    // Android 13+ 권한 요청
+    // Android 구현체 가져오기
     final androidImpl = _notifications
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>();
     
     if (androidImpl != null) {
+      // Android 13+ 알림 권한 요청
       await androidImpl.requestNotificationsPermission();
+      
+      // Android 12+ (API 31+) Exact Alarm 권한 요청
+      final exactAlarmPermission = await androidImpl.requestExactAlarmsPermission();
+      print('Exact alarm permission: $exactAlarmPermission');
     }
 
-    return result ?? true;
+    return iosResult ?? true;
   }
 
   // 특정 식물 알림 예약
