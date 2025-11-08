@@ -59,6 +59,9 @@ class MyApp extends StatelessWidget {
       title: 'Plant Water Buddy - Lite',
       debugShowCheckedModeBanner: false,
       
+      // 다크모드 비활성화 - 항상 라이트 테마 사용
+      themeMode: ThemeMode.light,
+      
       // 다국어 설정
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
@@ -105,41 +108,6 @@ class MyApp extends StatelessWidget {
           fillColor: Colors.grey.shade50,
         ),
       ),
-      
-      // 다크 테마
-      darkTheme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.green,
-          brightness: Brightness.dark,
-        ),
-        useMaterial3: true,
-        appBarTheme: const AppBarTheme(
-          centerTitle: true,
-          elevation: 0,
-        ),
-        cardTheme: const CardThemeData(
-          elevation: 2,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(12)),
-          ),
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            elevation: 2,
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-          ),
-        ),
-        inputDecorationTheme: InputDecorationTheme(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-        ),
-      ),
-      
-      themeMode: ThemeMode.system,
       
       // 홈 페이지
       home: const HomePage(),
