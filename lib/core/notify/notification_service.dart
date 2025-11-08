@@ -190,10 +190,50 @@ class NotificationService {
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
       payload: plant.id,
-      matchDateTimeComponents: DateTimeComponents.time,
     );
     
     print('✅ 알람 예약 완료: ${plant.name} (ID: ${plant.id.hashCode})');
+  }
+
+  // 즉시 테스트 알림 전송
+  Future<void> showTestNotification() async {
+    const androidDetails = AndroidNotificationDetails(
+      'water_ch',
+      'Plant Water',
+      channelDescription: '식물 물주기 알림',
+      importance: Importance.max,
+      priority: Priority.max,
+      icon: '@mipmap/ic_launcher',
+      playSound: true,
+      enableVibration: true,
+      enableLights: true,
+      fullScreenIntent: true,
+      category: AndroidNotificationCategory.alarm,
+      visibility: NotificationVisibility.public,
+      autoCancel: false,
+      ongoing: false,
+      channelShowBadge: true,
+    );
+
+    const iosDetails = DarwinNotificationDetails(
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: true,
+    );
+
+    const details = NotificationDetails(
+      android: androidDetails,
+      iOS: iosDetails,
+    );
+
+    await _notifications.show(
+      999,
+      '🌱 테스트 알림',
+      '알림이 정상적으로 작동합니다!',
+      details,
+    );
+    
+    print('✅ 테스트 알림 전송 완료');
   }
 
   // 특정 식물 알림 취소

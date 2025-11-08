@@ -44,6 +44,24 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 },
               ),
               ListTile(
+                leading: const Icon(Icons.notifications_outlined),
+                title: const Text('테스트 알림 보내기'),
+                subtitle: const Text('즉시 알림이 울리는지 테스트합니다'),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () async {
+                  final notificationService = NotificationService();
+                  await notificationService.showTestNotification();
+                  if (mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('테스트 알림을 전송했습니다!'),
+                        backgroundColor: Colors.green,
+                      ),
+                    );
+                  }
+                },
+              ),
+              ListTile(
                 leading: const Icon(Icons.battery_charging_full),
                 title: const Text('배터리 최적화 해제'),
                 subtitle: const Text('알람이 안 울리면 이 설정을 해제하세요'),
@@ -103,9 +121,20 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                     showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
-                        title: const Text('예약된 알림'),
+                        title: Text('예약된 알림 (${pending.length}개)'),
                         content: pending.isEmpty
-                            ? const Text('예약된 알림이 없습니다.')
+                            ? const Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(Icons.alarm_off, size: 48, color: Colors.grey),
+                                  SizedBox(height: 16),
+                                  Text(
+                                    '예약된 알림이 없습니다.\n\n'
+                                    '식물을 추가하고 알림을 활성화하세요.',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              )
                             : SizedBox(
                                 width: double.maxFinite,
                                 child: ListView.builder(
@@ -113,10 +142,23 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                                   itemCount: pending.length,
                                   itemBuilder: (context, index) {
                                     final notification = pending[index];
-                                    return ListTile(
-                                      title: Text(notification.title ?? '제목 없음'),
-                                      subtitle: Text(notification.body ?? '내용 없음'),
-                                      trailing: Text('ID: ${notification.id}'),
+                                    return Card(
+                                      child: ListTile(
+                                        leading: const Icon(Icons.alarm, color: Colors.green),
+                                        title: Text(notification.title ?? '제목 없음'),
+                                        subtitle: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(notification.body ?? '내용 없음'),
+                                            const SizedBox(height: 4),
+                                            Text(
+                                              'ID: ${notification.id}',
+                                              style: const TextStyle(fontSize: 12, color: Colors.grey),
+                                            ),
+                                          ],
+                                        ),
+                                        isThreeLine: true,
+                                      ),
                                     );
                                   },
                                 ),
