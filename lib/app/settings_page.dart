@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../state/plant_controller.dart';
+import '../core/notify/notification_service.dart';
 
 class SettingsPage extends ConsumerStatefulWidget {
   const SettingsPage({super.key});
@@ -43,7 +44,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.refresh),
+                leading: const Icon(Icons.notifications_active),
                 title: const Text('알림 재설정'),
                 subtitle: const Text('모든 알림을 다시 예약합니다'),
                 trailing: const Icon(Icons.chevron_right),
@@ -54,6 +55,48 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                       const SnackBar(
                         content: Text('알림을 재설정했습니다'),
                         backgroundColor: Colors.green,
+                      ),
+                    );
+                  }
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.alarm),
+                title: const Text('예약된 알림 확인'),
+                subtitle: const Text('현재 대기 중인 알림 목록'),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () async {
+                  final notificationService = NotificationService();
+                  final pending = await notificationService.getPendingNotifications();
+                  
+                  if (mounted) {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('예약된 알림'),
+                        content: pending.isEmpty
+                            ? const Text('예약된 알림이 없습니다.')
+                            : SizedBox(
+                                width: double.maxFinite,
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: pending.length,
+                                  itemBuilder: (context, index) {
+                                    final notification = pending[index];
+                                    return ListTile(
+                                      title: Text(notification.title ?? '제목 없음'),
+                                      subtitle: Text(notification.body ?? '내용 없음'),
+                                      trailing: Text('ID: ${notification.id}'),
+                                    );
+                                  },
+                                ),
+                              ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text('확인'),
+                          ),
+                        ],
                       ),
                     );
                   }

@@ -7,6 +7,10 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <!-- 알림 예약 (Android 12+) -->
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <!-- 부팅 완료 수신 (알람 재설정용) -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- 알람 사용 권한 (Android 12 이하) -->
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
     
     <application
         android:label="물주기 알림_lite"

@@ -124,9 +124,15 @@ class NotificationService {
     );
 
     // 과거 시간이면 예약하지 않음
-    if (scheduledTime.isBefore(tz.TZDateTime.now(tz.local))) {
+    final now = tz.TZDateTime.now(tz.local);
+    if (scheduledTime.isBefore(now)) {
+      print('⚠️ 알람 시간이 과거입니다: $scheduledTime (현재: $now)');
       return;
     }
+
+    print('📅 알람 예약: ${plant.name} - $scheduledTime');
+    print('   현재 시간: $now');
+    print('   남은 시간: ${scheduledTime.difference(now)}');
 
     const androidDetails = AndroidNotificationDetails(
       'water_ch',
@@ -135,6 +141,10 @@ class NotificationService {
       importance: Importance.high,
       priority: Priority.high,
       icon: '@mipmap/ic_launcher',
+      playSound: true,
+      enableVibration: true,
+      enableLights: true,
+      fullScreenIntent: true,
     );
 
     const iosDetails = DarwinNotificationDetails(
@@ -158,7 +168,10 @@ class NotificationService {
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
       payload: plant.id,
+      matchDateTimeComponents: DateTimeComponents.time,
     );
+    
+    print('✅ 알람 예약 완료: ${plant.name} (ID: ${plant.id.hashCode})');
   }
 
   // 특정 식물 알림 취소
