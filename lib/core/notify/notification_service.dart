@@ -2,6 +2,7 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import '../../domain/plant.dart';
 
 class NotificationService {
@@ -17,6 +18,14 @@ class NotificationService {
   // 초기화
   Future<void> init() async {
     if (_initialized) return;
+
+    // Android Alarm Manager 초기화 (Android만)
+    try {
+      await AndroidAlarmManager.initialize();
+      print('✅ Android Alarm Manager 초기화 완료');
+    } catch (e) {
+      print('⚠️ Android Alarm Manager 초기화 실패 (iOS일 수 있음): $e');
+    }
 
     // 타임존 초기화
     tz.initializeTimeZones();
@@ -151,6 +160,30 @@ class NotificationService {
     print('   현재 시간: $now');
     print('   남은 시간: ${scheduledTime.difference(now)}');
 
+    // Android Alarm Manager로 정확한 알람 설정 (Android에서만 작동)
+    final alarmId = plant.id.hashCode;
+    final milliseconds = scheduledTime.millisecondsSinceEpoch;
+    
+    try {
+      await AndroidAlarmManager.oneShotAt(
+        DateTime.fromMillisecondsSinceEpoch(milliseconds),
+        alarmId,
+        _fireNotification,
+        exact: true,
+        wakeup: true,
+        rescheduleOnReboot: true,
+        alarmClock: true, // 알람 시계 모드: Doze 모드 무시
+        params: {
+          'plantId': plant.id,
+          'plantName': plant.name,
+        },
+      );
+      print('✅ Android Alarm Manager로 알람 예약 완료');
+    } catch (e) {
+      print('⚠️ Android Alarm Manager 실패, 기본 방식 사용: $e');
+    }
+
+    // 백업으로 flutter_local_notifications도 사용
     const androidDetails = AndroidNotificationDetails(
       'water_ch',
       'Plant Water',
@@ -263,4 +296,44 @@ class NotificationService {
   Future<List<PendingNotificationRequest>> getPendingNotifications() async {
     return await _notifications.pendingNotificationRequests();
   }
+}
+
+// Android Alarm Manager 콜백 함수 (top-level 함수여야 함)
+@pragma('vm:entry-point')
+void _fireNotification(int id, Map<String, dynamic> params) async {
+  print('🔔 알람 콜백 실행: ID=$id');
+  
+  final plantName = params['plantName'] as String? ?? '식물';
+  
+  final notifications = FlutterLocalNotificationsPlugin();
+  
+  const androidDetails = AndroidNotificationDetails(
+    'water_ch',
+    'Plant Water',
+    channelDescription: '식물 물주기 알림',
+    importance: Importance.max,
+    priority: Priority.max,
+    icon: '@mipmap/ic_launcher',
+    playSound: true,
+    enableVibration: true,
+    enableLights: true,
+    fullScreenIntent: true,
+    category: AndroidNotificationCategory.alarm,
+    visibility: NotificationVisibility.public,
+    autoCancel: false,
+    ongoing: false,
+    channelShowBadge: true,
+  );
+
+  const details = NotificationDetails(android: androidDetails);
+
+  await notifications.show(
+    id,
+    '🌱 $plantName 물주기 시간이에요!',
+    '오늘은 $plantName에게 물을 줄 날이에요.',
+    details,
+    payload: params['plantId'] as String?,
+  );
+  
+  print('✅ 알람 알림 전송 완료');
 }
