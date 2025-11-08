@@ -20,29 +20,30 @@ class _PlantFormPageState extends ConsumerState<PlantFormPage> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _customIntervalController = TextEditingController();
-  
+
   String? _imagePath;
   int _intervalDays = 7;
   DateTime _lastWateredAt = DateTime.now();
   TimeOfDay _notifyTime = const TimeOfDay(hour: 9, minute: 0);
   bool _isActive = true;
-  
+
   final List<int> _presetIntervals = [3, 7, 10, 14, 30];
   bool _useCustomInterval = false;
 
   @override
   void initState() {
     super.initState();
-    
+
     if (widget.plant != null) {
       final plant = widget.plant!;
       _nameController.text = plant.name;
       _imagePath = plant.imagePath;
       _intervalDays = plant.intervalDays;
       _lastWateredAt = plant.lastWateredAt;
-      _notifyTime = TimeOfDay(hour: plant.notifyHour, minute: plant.notifyMinute);
+      _notifyTime =
+          TimeOfDay(hour: plant.notifyHour, minute: plant.notifyMinute);
       _isActive = plant.isActive;
-      
+
       if (!_presetIntervals.contains(_intervalDays)) {
         _useCustomInterval = true;
         _customIntervalController.text = _intervalDays.toString();
@@ -75,7 +76,7 @@ class _PlantFormPageState extends ConsumerState<PlantFormPage> {
             // 이미지 선택
             _buildImagePicker(),
             const SizedBox(height: 24),
-            
+
             // 이름
             TextFormField(
               controller: _nameController,
@@ -92,7 +93,7 @@ class _PlantFormPageState extends ConsumerState<PlantFormPage> {
               },
             ),
             const SizedBox(height: 16),
-            
+
             // 물주기 주기
             const Text(
               '물주기 주기',
@@ -154,7 +155,7 @@ class _PlantFormPageState extends ConsumerState<PlantFormPage> {
               ),
             ],
             const SizedBox(height: 16),
-            
+
             // 마지막 물 준 날짜
             ListTile(
               contentPadding: EdgeInsets.zero,
@@ -176,12 +177,13 @@ class _PlantFormPageState extends ConsumerState<PlantFormPage> {
               },
             ),
             const Divider(),
-            
+
             // 알림 시간
             ListTile(
               contentPadding: EdgeInsets.zero,
               title: const Text('알림 시간'),
-              subtitle: Text(DateFormats.formatTime(_notifyTime.hour, _notifyTime.minute)),
+              subtitle: Text(
+                  DateFormats.formatTime(_notifyTime.hour, _notifyTime.minute)),
               trailing: const Icon(Icons.access_time),
               onTap: () async {
                 final time = await showTimePicker(
@@ -189,7 +191,8 @@ class _PlantFormPageState extends ConsumerState<PlantFormPage> {
                   initialTime: _notifyTime,
                   builder: (context, child) {
                     return MediaQuery(
-                      data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
+                      data: MediaQuery.of(context)
+                          .copyWith(alwaysUse24HourFormat: false),
                       child: child!,
                     );
                   },
@@ -202,7 +205,7 @@ class _PlantFormPageState extends ConsumerState<PlantFormPage> {
               },
             ),
             const Divider(),
-            
+
             // 활성화 스위치
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
@@ -216,7 +219,7 @@ class _PlantFormPageState extends ConsumerState<PlantFormPage> {
               },
             ),
             const SizedBox(height: 24),
-            
+
             // 저장 버튼
             ElevatedButton(
               onPressed: _savePlant,
@@ -224,11 +227,12 @@ class _PlantFormPageState extends ConsumerState<PlantFormPage> {
                 backgroundColor: Colors.green,
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                textStyle:
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               child: Text(isEditing ? '수정하기' : '저장하기'),
             ),
-            
+
             // 삭제 버튼 (수정 모드일 때만)
             if (isEditing) ...[
               const SizedBox(height: 8),
@@ -260,7 +264,8 @@ class _PlantFormPageState extends ConsumerState<PlantFormPage> {
                   ? FileImage(File(_imagePath!))
                   : null,
               child: _imagePath == null || _imagePath!.isEmpty
-                  ? Icon(Icons.camera_alt, size: 40, color: Colors.green.shade700)
+                  ? Icon(Icons.camera_alt,
+                      size: 40, color: Colors.green.shade700)
                   : null,
             ),
             Positioned(
@@ -284,7 +289,7 @@ class _PlantFormPageState extends ConsumerState<PlantFormPage> {
   Future<void> _pickImage() async {
     final picker = ImagePicker();
     final image = await picker.pickImage(source: ImageSource.gallery);
-    
+
     if (image != null) {
       setState(() {
         _imagePath = image.path;
@@ -298,7 +303,7 @@ class _PlantFormPageState extends ConsumerState<PlantFormPage> {
     }
 
     final controller = ref.read(plantControllerProvider.notifier);
-    
+
     final plant = Plant(
       id: widget.plant?.id ?? '',
       name: _nameController.text.trim(),
@@ -350,7 +355,7 @@ class _PlantFormPageState extends ConsumerState<PlantFormPage> {
     if (confirmed == true && widget.plant != null) {
       final controller = ref.read(plantControllerProvider.notifier);
       await controller.delete(widget.plant!.id);
-      
+
       if (mounted) {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
