@@ -206,6 +206,9 @@ class NotificationService {
       presentAlert: true,
       presentBadge: true,
       presentSound: true,
+      sound: 'default',
+      badgeNumber: 1,
+      interruptionLevel: InterruptionLevel.timeSensitive, // iOS 15+: 중요 알림
     );
 
     const details = NotificationDetails(
@@ -252,6 +255,9 @@ class NotificationService {
       presentAlert: true,
       presentBadge: true,
       presentSound: true,
+      sound: 'default',
+      badgeNumber: 1,
+      interruptionLevel: InterruptionLevel.timeSensitive,
     );
 
     const details = NotificationDetails(
