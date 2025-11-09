@@ -26,6 +26,7 @@ mapping = {
   'b': candidate_path('feature_graphic_variant_b.png'),
   'c': candidate_path('feature_graphic_variant_c.png'),
   'v2': candidate_path('feature_graphic_v2.png'),
+  'premium': candidate_path('feature_graphic_premium.png'),
 }
 
 choice = (sys.argv[1] if len(sys.argv) > 1 else 'b').lower()

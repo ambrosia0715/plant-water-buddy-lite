@@ -1,7 +1,7 @@
 name: plant_water_buddy_lite
 description: "Plant Water Buddy - Lite: 식물 물주기 알림 앱"
 publish_to: 'none'
-version: 1.0.0+1
+version: 1.0.4+5
 
 environment:
   sdk: '>=3.1.0 <4.0.0'

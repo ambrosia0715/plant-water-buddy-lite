@@ -4,6 +4,10 @@
 
 **앱 이름**: 물주기 알림_lite
 
+**Bundle ID (iOS)**: com.ambrosia.plantwaterbuddy.lite
+
+**SKU**: plantwaterbuddy-lite-2025
+
 **짧은 설명** (최대 80자):
 식물마다 주기를 설정하면 날짜에 맞춰 알려드려요! 간편한 식물 관리 앱
 

@@ -53,6 +53,7 @@ ROOT = os.path.dirname(os.path.dirname(__file__))
 ALT_ROOT = os.path.dirname(ROOT)
 def find_icon():
     candidates = [
+        ('assets/images', 'app_icon_rounded.png'),  # Prefer rounded version
         ('assets/images', 'app_icon.png'),
         ('assets/images', 'app_icon_512.png'),
         ('assets/store_graphics', 'app_icon_512.png'),
