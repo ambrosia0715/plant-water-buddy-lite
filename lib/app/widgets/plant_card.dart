@@ -38,7 +38,7 @@ class PlantCard extends StatelessWidget {
               // 아바타 (이미지 또는 이니셜)
               _buildAvatar(),
               const SizedBox(width: 16),
-              
+
               // 정보
               Expanded(
                 child: Column(
@@ -103,9 +103,11 @@ class PlantCard extends StatelessWidget {
                   ],
                 ),
               ),
-              
+
               // 물 줬어요 버튼
-              if (showWaterButton && plant.isActive && (isDueToday || isOverdue))
+              if (showWaterButton &&
+                  plant.isActive &&
+                  (isDueToday || isOverdue))
                 ElevatedButton(
                   onPressed: onWatered,
                   style: ElevatedButton.styleFrom(

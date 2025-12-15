@@ -224,7 +224,7 @@ lib/
    - [ ] 릴리스 빌드 시 테스트 모드 비활성화 (`--dart-define=DEBUG_MODE=false`)
 
 2. **플랫폼 설정**
-   - [ ] Android: 고유한 applicationId 설정 (현재: com.example.plant_water_buddy_lite)
+   - [x] Android: 고유한 applicationId 설정 (완료: com.ambrosia.plantwaterbuddy)
    - [ ] iOS: Bundle Identifier 설정
    - [ ] 앱 아이콘 제작 및 적용 (1024x1024)
    - [ ] 스플래시 스크린 커스터마이징

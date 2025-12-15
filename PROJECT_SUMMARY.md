@@ -169,7 +169,7 @@ lib/
 3. ✅ 알림 스케줄링 확인
 
 ### 릴리스 전 필수
-1. ⏳ 고유 applicationId 설정 (현재: com.example.plant_water_buddy_lite)
+1. ✅ 고유 applicationId 설정 (완료: com.ambrosia.plantwaterbuddy)
 2. ⏳ 앱 아이콘 제작 (1024x1024)
 3. ⏳ 스크린샷 촬영 (4장)
 4. ⏳ 개인정보 처리방침 웹페이지 생성

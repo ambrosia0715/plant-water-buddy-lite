@@ -1,5 +1,6 @@
-package com.example.plant_water_buddy_lite
+package com.ambrosia.plantwaterbuddy
 
 import io.flutter.embedding.android.FlutterActivity
 
 class MainActivity : FlutterActivity()
+

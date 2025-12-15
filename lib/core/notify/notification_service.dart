@@ -32,7 +32,8 @@ class NotificationService {
     tz.setLocalLocation(tz.getLocation('Asia/Seoul'));
 
     // Android 설정
-    const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const androidSettings =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
 
     // iOS 설정
     const iosSettings = DarwinInitializationSettings(
@@ -101,16 +102,16 @@ class NotificationService {
         );
 
     // Android 구현체 가져오기
-    final androidImpl = _notifications
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>();
-    
+    final androidImpl = _notifications.resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>();
+
     if (androidImpl != null) {
       // Android 13+ 알림 권한 요청
       await androidImpl.requestNotificationsPermission();
-      
+
       // Android 12+ (API 31+) Exact Alarm 권한 요청
-      final exactAlarmPermission = await androidImpl.requestExactAlarmsPermission();
+      final exactAlarmPermission =
+          await androidImpl.requestExactAlarmsPermission();
       print('Exact alarm permission: $exactAlarmPermission');
     }
 
@@ -119,10 +120,9 @@ class NotificationService {
 
   // 배터리 최적화 예외 요청 (Android)
   Future<void> requestBatteryOptimizationExemption() async {
-    final androidImpl = _notifications
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>();
-    
+    final androidImpl = _notifications.resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>();
+
     if (androidImpl != null) {
       // Android 시스템 설정으로 이동하여 배터리 최적화 해제
       // 사용자가 수동으로 설정해야 함
@@ -163,7 +163,7 @@ class NotificationService {
     // Android Alarm Manager로 정확한 알람 설정 (Android에서만 작동)
     final alarmId = plant.id.hashCode;
     final milliseconds = scheduledTime.millisecondsSinceEpoch;
-    
+
     try {
       await AndroidAlarmManager.oneShotAt(
         DateTime.fromMillisecondsSinceEpoch(milliseconds),
@@ -227,7 +227,7 @@ class NotificationService {
           UILocalNotificationDateInterpretation.absoluteTime,
       payload: plant.id,
     );
-    
+
     print('✅ 알람 예약 완료: ${plant.name} (ID: ${plant.id.hashCode})');
   }
 
@@ -271,7 +271,7 @@ class NotificationService {
       '알림이 정상적으로 작동합니다!',
       details,
     );
-    
+
     print('✅ 테스트 알림 전송 완료');
   }
 
@@ -308,11 +308,11 @@ class NotificationService {
 @pragma('vm:entry-point')
 void _fireNotification(int id, Map<String, dynamic> params) async {
   print('🔔 알람 콜백 실행: ID=$id');
-  
+
   final plantName = params['plantName'] as String? ?? '식물';
-  
+
   final notifications = FlutterLocalNotificationsPlugin();
-  
+
   const androidDetails = AndroidNotificationDetails(
     'water_ch',
     'Plant Water',
@@ -340,6 +340,6 @@ void _fireNotification(int id, Map<String, dynamic> params) async {
     details,
     payload: params['plantId'] as String?,
   );
-  
+
   print('✅ 알람 알림 전송 완료');
 }

@@ -38,7 +38,7 @@ void main() async {
   // Google Mobile Ads 초기화 (Android/iOS만)
   if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
     await MobileAds.instance.initialize();
-    
+
     // AdService 초기화
     final adService = AdService();
     await adService.init();
@@ -60,10 +60,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Plant Water Buddy - Lite',
       debugShowCheckedModeBanner: false,
-      
+
       // 다크모드 비활성화 - 항상 라이트 테마 사용
       themeMode: ThemeMode.light,
-      
+
       // 다국어 설정
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
@@ -75,7 +75,7 @@ class MyApp extends StatelessWidget {
         Locale('en', 'US'),
       ],
       locale: const Locale('ko', 'KR'),
-      
+
       // 테마
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
@@ -110,11 +110,9 @@ class MyApp extends StatelessWidget {
           fillColor: Colors.grey.shade50,
         ),
       ),
-      
+
       // 홈 페이지
       home: const HomePage(),
     );
   }
 }
-
-

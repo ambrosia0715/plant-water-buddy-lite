@@ -115,8 +115,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () async {
                   final notificationService = NotificationService();
-                  final pending = await notificationService.getPendingNotifications();
-                  
+                  final pending =
+                      await notificationService.getPendingNotifications();
+
                   if (mounted) {
                     showDialog(
                       context: context,
@@ -126,7 +127,8 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                             ? const Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Icon(Icons.alarm_off, size: 48, color: Colors.grey),
+                                  Icon(Icons.alarm_off,
+                                      size: 48, color: Colors.grey),
                                   SizedBox(height: 16),
                                   Text(
                                     '예약된 알림이 없습니다.\n\n'
@@ -144,16 +146,21 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                                     final notification = pending[index];
                                     return Card(
                                       child: ListTile(
-                                        leading: const Icon(Icons.alarm, color: Colors.green),
-                                        title: Text(notification.title ?? '제목 없음'),
+                                        leading: const Icon(Icons.alarm,
+                                            color: Colors.green),
+                                        title:
+                                            Text(notification.title ?? '제목 없음'),
                                         subtitle: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(notification.body ?? '내용 없음'),
                                             const SizedBox(height: 4),
                                             Text(
                                               'ID: ${notification.id}',
-                                              style: const TextStyle(fontSize: 12, color: Colors.grey),
+                                              style: const TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.grey),
                                             ),
                                           ],
                                         ),
@@ -176,9 +183,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               ),
             ],
           ),
-          
+
           const Divider(height: 32),
-          
+
           // 데이터 관리
           _buildSection(
             title: '데이터 관리',
@@ -222,9 +229,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               ),
             ],
           ),
-          
+
           const Divider(height: 32),
-          
+
           // 앱 정보
           _buildSection(
             title: '앱 정보',
@@ -256,9 +263,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               ),
             ],
           ),
-          
+
           const Divider(height: 32),
-          
+
           // 개발자 옵션
           _buildSection(
             title: '개발자',

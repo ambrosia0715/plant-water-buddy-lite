@@ -46,17 +46,17 @@ class HomePage extends ConsumerWidget {
         children: [
           // 이번 주 통계 배지
           _buildWeeklyStats(controller),
-          
+
           // 식물 리스트
           Expanded(
             child: plantsAsync.when(
               data: (plants) {
                 final todayPlants = controller.getTodayAndOverdue();
-                
+
                 if (todayPlants.isEmpty) {
                   return _buildEmptyState(context, controller);
                 }
-                
+
                 return ListView.builder(
                   itemCount: todayPlants.length,
                   itemBuilder: (context, index) {
@@ -87,7 +87,7 @@ class HomePage extends ConsumerWidget {
               ),
             ),
           ),
-          
+
           // 하단 광고 배너
           const AdBannerWidget(),
         ],

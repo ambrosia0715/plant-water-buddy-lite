@@ -32,32 +32,46 @@ def ensure_dir(path):
 
 def resize_with_fit(img: Image.Image, target_w: int, target_h: int, bg_color=(245, 250, 247)):
     """
-    Resize image to fit within target dimensions while maintaining aspect ratio,
-    then center on a background canvas of target size.
+    Resize image to fit within target dimensions while maintaining aspect ratio (iPhone),
+    or fill (center crop) for iPad to avoid iPhone frame on iPad screenshots.
     """
     src_w, src_h = img.size
     src_ratio = src_w / src_h
     target_ratio = target_w / target_h
-    
-    if src_ratio > target_ratio:
-        # Source is wider: fit width
-        new_w = target_w
-        new_h = int(target_w / src_ratio)
+
+    # iPad: fill (center crop), iPhone: fit (letterbox)
+    if target_w >= 2000:  # iPad
+        # Center crop to fill
+        if src_ratio > target_ratio:
+            # Source is wider: crop width
+            new_h = src_h
+            new_w = int(new_h * target_ratio)
+            left = (src_w - new_w) // 2
+            top = 0
+        else:
+            # Source is taller: crop height
+            new_w = src_w
+            new_h = int(new_w / target_ratio)
+            left = 0
+            top = (src_h - new_h) // 2
+        box = (left, top, left + new_w, top + new_h)
+        cropped = img.crop(box)
+        resized = cropped.resize((target_w, target_h), Image.Resampling.LANCZOS)
+        return resized
     else:
-        # Source is taller: fit height
-        new_h = target_h
-        new_w = int(target_h * src_ratio)
-    
-    # Resize with high quality
-    resized = img.resize((new_w, new_h), Image.Resampling.LANCZOS)
-    
-    # Create canvas and center
-    canvas = Image.new('RGB', (target_w, target_h), bg_color)
-    paste_x = (target_w - new_w) // 2
-    paste_y = (target_h - new_h) // 2
-    canvas.paste(resized, (paste_x, paste_y))
-    
-    return canvas
+        # iPhone: fit with background
+        if src_ratio > target_ratio:
+            new_w = target_w
+            new_h = int(target_w / src_ratio)
+        else:
+            new_h = target_h
+            new_w = int(target_h * src_ratio)
+        resized = img.resize((new_w, new_h), Image.Resampling.LANCZOS)
+        canvas = Image.new('RGB', (target_w, target_h), bg_color)
+        paste_x = (target_w - new_w) // 2
+        paste_y = (target_h - new_h) // 2
+        canvas.paste(resized, (paste_x, paste_y))
+        return canvas
 
 def process_screenshots():
     # Find all source screenshots (any PNG file in screenshots dir)

@@ -32,6 +32,10 @@
 # Android Alarm Manager
 -keep class dev.fluttercommunity.plus.androidalarmmanager.** { *; }
 
+# MainActivity - 앱의 메인 엔트리 포인트 보호
+-keep class com.ambrosia.plantwaterbuddy.MainActivity { *; }
+-keepclassmembers class com.ambrosia.plantwaterbuddy.MainActivity { *; }
+
 # Gson
 -keepattributes Signature
 -keepattributes *Annotation*

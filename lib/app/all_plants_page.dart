@@ -30,18 +30,18 @@ class _AllPlantsPageState extends ConsumerState<AllPlantsPage> {
         children: [
           // 정렬 옵션
           _buildSortSegment(),
-          
+
           // 식물 리스트
           Expanded(
             child: plantsAsync.when(
               data: (plants) {
                 final repo = ref.read(plantRepositoryProvider);
                 final sortedPlants = repo.getAll(sort: _sortOption);
-                
+
                 if (sortedPlants.isEmpty) {
                   return _buildEmptyState();
                 }
-                
+
                 return ListView.builder(
                   itemCount: sortedPlants.length,
                   itemBuilder: (context, index) {

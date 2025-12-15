@@ -132,13 +132,13 @@ class PlantRepository {
     try {
       final data = jsonDecode(jsonString) as Map<String, dynamic>;
       final plantsList = data['plants'] as List<dynamic>;
-      
+
       int importedCount = 0;
-      
+
       for (final plantJson in plantsList) {
         final newPlant = Plant.fromJson(plantJson as Map<String, dynamic>);
         final existing = getById(newPlant.id);
-        
+
         if (existing == null) {
           // 새 식물 추가
           await add(newPlant);
@@ -151,7 +151,7 @@ class PlantRepository {
           }
         }
       }
-      
+
       return importedCount;
     } catch (e) {
       throw Exception('JSON 파싱 실패: $e');
@@ -162,7 +162,7 @@ class PlantRepository {
   int getWeeklyCompletedCount() {
     final now = DateTime.now();
     final weekAgo = now.subtract(const Duration(days: 7));
-    
+
     return _safeBox.values.where((p) {
       return p.lastWateredAt.isAfter(weekAgo);
     }).length;
