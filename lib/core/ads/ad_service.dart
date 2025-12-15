@@ -1,6 +1,7 @@
 // lib/core/ads/ad_service.dart
 import 'dart:io';
 import 'dart:math';
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class AdService {
@@ -9,10 +10,13 @@ class AdService {
   AdService._internal();
 
   // AdMob ID
-  static const String _androidBannerId = 'ca-app-pub-1444459980078427/6451083653';
-  static const String _iosBannerId = 'ca-app-pub-1444459980078427/7676535416';
-  static const String _androidInterstitialId = 'ca-app-pub-1444459980078427/6451083653';
-  static const String _iosInterstitialId = 'ca-app-pub-1444459980078427/7676535416';
+  static const String _androidBannerId =
+      'ca-app-pub-1444459980078427/2915794524';
+  static const String _iosBannerId = 'ca-app-pub-1444459980078427/6021481775';
+  static const String _androidInterstitialId =
+      'ca-app-pub-1444459980078427/2915794524';
+  static const String _iosInterstitialId =
+      'ca-app-pub-1444459980078427/6021481775';
 
   // 배너 광고 ID
   static String get bannerAdUnitId {
@@ -36,7 +40,9 @@ class AdService {
     return Platform.isAndroid ? _androidInterstitialId : _iosInterstitialId;
   }
 
-  static bool get _isTestMode => const bool.fromEnvironment('DEBUG_MODE', defaultValue: true);
+  // 디버그 모드일 때만 테스트 광고 사용
+  // 릴리스 빌드에서는 항상 실제 광고 사용
+  static bool get _isTestMode => kDebugMode;
 
   // 인터스티셜 상태
   InterstitialAd? _interstitialAd;
@@ -53,6 +59,18 @@ class AdService {
 
   // 초기화
   Future<void> init() async {
+    // Google Play 가족 정책 준수를 위한 광고 설정
+    // 가족 친화 콘텐츠만 표시하도록 설정
+    final requestConfiguration = RequestConfiguration(
+      // G 등급만 허용 (가족 친화)
+      maxAdContentRating: MaxAdContentRating.g,
+      // 아동 대상 콘텐츠로 태그
+      tagForChildDirectedTreatment: TagForChildDirectedTreatment.yes,
+      // 미성년자 동의 태그
+      tagForUnderAgeOfConsent: TagForUnderAgeOfConsent.yes,
+    );
+    MobileAds.instance.updateRequestConfiguration(requestConfiguration);
+    
     await MobileAds.instance.initialize();
     _loadInterstitial();
   }
@@ -138,9 +156,11 @@ class AdService {
 
     // 쿨다운 체크
     if (_lastInterstitialShown != null) {
-      final cooldown = Random().nextInt(_maxCooldownSeconds - _minCooldownSeconds + 1) +
-          _minCooldownSeconds;
-      final elapsed = DateTime.now().difference(_lastInterstitialShown!).inSeconds;
+      final cooldown =
+          Random().nextInt(_maxCooldownSeconds - _minCooldownSeconds + 1) +
+              _minCooldownSeconds;
+      final elapsed =
+          DateTime.now().difference(_lastInterstitialShown!).inSeconds;
       if (elapsed < cooldown) {
         return false;
       }

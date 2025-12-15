@@ -16,6 +16,9 @@
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <!-- 시스템 알람 창 표시 (AlarmClock 모드) -->
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <!-- 포그라운드 서비스 권한 (Android 14+) -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_ALARM" />
     
     <application
         android:label="물주기 알림_lite"
@@ -26,7 +29,7 @@
         <!-- AdMob App ID -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-1444459980078427~7755592316"/>
+            android:value="ca-app-pub-1444459980078427~2297808545"/>
         
         <activity
             android:name=".MainActivity"

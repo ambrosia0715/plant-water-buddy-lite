@@ -44,8 +44,8 @@ android {
         applicationId = "com.ambrosia.plantwaterbuddy"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
-        versionCode = 5
-        versionName = "1.0.4"
+        versionCode = 11
+        versionName = "1.0.10"
         multiDexEnabled = true
     }
 

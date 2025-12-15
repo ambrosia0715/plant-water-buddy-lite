@@ -53,7 +53,7 @@
 	</array>
 	<!-- AdMob App ID -->
 	<key>GADApplicationIdentifier</key>
-	<string>ca-app-pub-1444459980078427~3620357446</string>
+	<string>ca-app-pub-1444459980078427~3249101597</string>
 	<!-- 알림 권한 설명 -->
 	<key>NSUserNotificationUsageDescription</key>
 	<string>식물 물주기 알림을 전달하기 위해 알림 권한이 필요합니다.</string>
